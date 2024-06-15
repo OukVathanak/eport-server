@@ -24,6 +24,10 @@
       "relation": "manyToOne",
       "target": "api::user-app.user-app",
       "inversedBy": "socials"
+    },
+    "link": {
+      "type": "string",
+      "required": true
     }
   }
 }

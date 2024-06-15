@@ -8,6 +8,8 @@ export interface UserApp {
   username: string;
   password: string;
   email: string;
+  firstName: string;
+  lastName: string;
   isHidden: boolean;
   publishedAt?: Date;
   createdAt: Date;
@@ -23,6 +25,8 @@ export class UserAppDVO {
   username: string;
   password: string;
   email: string;
+  firstName: string;
+  lastName: string;
   isHidden: boolean;
   projects?: Project[];
   homePage?: HomePage;
@@ -34,6 +38,8 @@ export class UserAppDVO {
     this.username = data.username;
     this.password = data.password;
     this.email = data.email;
+    this.firstName = data.firstName;
+    this.lastName = data.lastName;
     this.isHidden = data.isHidden;
     this.projects = data.projects;
     this.homePage = data.homePage;
@@ -47,15 +53,8 @@ export interface UserAppDTO {
   username: string;
   password: string;
   email: string;
+  firstName: string;
+  lastName: string;
   isHidden: boolean;
   publishedAt?: Date;
 }
-
-// export const createUserApp = async (
-//   payload: UserAppPayload
-// ): Promise<UserAppDVO> => {
-//   try {
-//   } catch (error) {
-//     throw new Error(error);
-//   }
-// };
