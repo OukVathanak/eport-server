@@ -28,12 +28,6 @@
       "target": "api::user-app.user-app",
       "inversedBy": "projects"
     },
-    "homePage": {
-      "type": "relation",
-      "relation": "manyToOne",
-      "target": "api::home-page.home-page",
-      "inversedBy": "projects"
-    },
     "sections": {
       "type": "relation",
       "relation": "oneToMany",

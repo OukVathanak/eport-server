@@ -6,7 +6,7 @@ import { factories } from "@strapi/strapi";
 import { QueryParams } from "../../../utils/interface";
 import {
   Project,
-  ProjectCreate,
+  ProjectDTO,
   ProjectDVO,
 } from "../../../../types/collections/project";
 
@@ -46,7 +46,7 @@ export default factories.createCoreService(
         }
       },
 
-      async postProject(payload: ProjectCreate): Promise<ProjectDVO> {
+      async postProject(payload: ProjectDTO): Promise<ProjectDVO> {
         try {
           const project = (await strapi.entityService.create(
             "api::project.project",
@@ -59,7 +59,7 @@ export default factories.createCoreService(
         }
       },
 
-      async putProject(payload: Project): Promise<ProjectDVO> {
+      async putProject(payload: ProjectDTO): Promise<ProjectDVO> {
         try {
           const project = (await strapi.entityService.update(
             "api::project.project",

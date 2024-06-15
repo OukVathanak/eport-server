@@ -888,11 +888,6 @@ export interface ApiHomePageHomePage extends Schema.CollectionType {
       'oneToOne',
       'api::user-app.user-app'
     >;
-    projects: Attribute.Relation<
-      'api::home-page.home-page',
-      'oneToMany',
-      'api::project.project'
-    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -965,11 +960,6 @@ export interface ApiProjectProject extends Schema.CollectionType {
       'api::project.project',
       'manyToOne',
       'api::user-app.user-app'
-    >;
-    homePage: Attribute.Relation<
-      'api::project.project',
-      'manyToOne',
-      'api::home-page.home-page'
     >;
     sections: Attribute.Relation<
       'api::project.project',

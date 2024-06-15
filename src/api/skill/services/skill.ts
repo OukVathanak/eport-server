@@ -4,11 +4,7 @@
 
 import { factories } from "@strapi/strapi";
 import { QueryParams } from "../../../utils/interface";
-import {
-  Skill,
-  SkillCreate,
-  SkillDVO,
-} from "../../../../types/collections/skill";
+import { Skill, SkillDTO, SkillDVO } from "../../../../types/collections/skill";
 
 export default factories.createCoreService("api::skill.skill", ({ strapi }) => {
   return {
@@ -44,16 +40,32 @@ export default factories.createCoreService("api::skill.skill", ({ strapi }) => {
       }
     },
 
-    // async postSkill(payload: SkillCreate): Promise<SkillDVO> {
-    //   try {
-    //     const skill = (await strapi.entityService.create("api::skill.skill", {
-    //       data: payload,
-    //     })) as Skill;
+    async postSkill(payload: SkillDTO): Promise<SkillDVO> {
+      try {
+        const skill = (await strapi.entityService.create("api::skill.skill", {
+          data: payload,
+        })) as Skill;
 
-    //     return new SkillDVO(skill)
-    //   } catch (error) {
-    //     throw Error(error);
-    //   }
-    // },
+        return new SkillDVO(skill);
+      } catch (error) {
+        throw Error(error);
+      }
+    },
+
+    async putSkill(payload: SkillDTO): Promise<SkillDVO> {
+      try {
+        const skill = (await strapi.entityService.update(
+          "api::skill.skill",
+          payload.id,
+          {
+            data: payload,
+          }
+        )) as Skill;
+
+        return new SkillDVO(skill);
+      } catch (error) {
+        throw Error(error);
+      }
+    },
   };
 });

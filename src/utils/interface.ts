@@ -6,7 +6,7 @@ export interface QueryParams {
   filters?: {
     [key: string]: any;
   };
-  populate?: string | string[];
+  populate?: any;
   fields?: string | string[];
   pagination?: {
     page?: number;

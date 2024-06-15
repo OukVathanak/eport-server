@@ -7,7 +7,7 @@ import { QueryParams } from "../../../utils/interface";
 import {
   UserApp,
   UserAppDVO,
-  UserAppCreate,
+  UserAppDTO,
 } from "../../../../types/collections/user-app";
 
 export default factories.createCoreService(
@@ -46,7 +46,7 @@ export default factories.createCoreService(
         }
       },
 
-      async postUserApp(payload: UserAppCreate): Promise<UserAppDVO> {
+      async postUserApp(payload: UserAppDTO): Promise<UserAppDVO> {
         try {
           const user = (await strapi.entityService.create(
             "api::user-app.user-app",
@@ -59,7 +59,7 @@ export default factories.createCoreService(
         }
       },
 
-      async putUserApp(payload: UserApp): Promise<UserAppDVO> {
+      async putUserApp(payload: UserAppDTO): Promise<UserAppDVO> {
         try {
           const user = (await strapi.entityService.update(
             "api::user-app.user-app",

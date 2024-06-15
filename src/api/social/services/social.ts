@@ -6,7 +6,7 @@ import { factories } from "@strapi/strapi";
 import { QueryParams } from "../../../utils/interface";
 import {
   Social,
-  SocialCreate,
+  SocialDTO,
   SocialDVO,
 } from "../../../../types/collections/social";
 
@@ -46,7 +46,7 @@ export default factories.createCoreService(
         }
       },
 
-      async postSocial(payload: SocialCreate) {
+      async postSocial(payload: SocialDTO) {
         try {
           const social = (await strapi.entityService.create(
             "api::social.social",
@@ -59,7 +59,7 @@ export default factories.createCoreService(
         }
       },
 
-      async putSocial(payload: Social) {
+      async putSocial(payload: SocialDTO) {
         try {
           const social = (await strapi.entityService.update(
             "api::social.social",

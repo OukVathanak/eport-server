@@ -24,7 +24,8 @@ export class SocialDVO {
   }
 }
 
-export interface SocialCreate {
+export interface SocialDTO {
+  id?: number;
   name: string;
   link: string;
   userApp?: UserApp;

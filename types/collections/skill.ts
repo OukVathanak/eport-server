@@ -2,8 +2,8 @@ import { UserApp } from "./user-app";
 
 export interface Skill {
   id: number;
-  name: String;
-  iconUrl: String;
+  name: string;
+  iconUrl: string;
   publishedAt?: Date;
   createdAt: Date;
   updatedAt: Date;
@@ -12,8 +12,8 @@ export interface Skill {
 
 export class SkillDVO {
   id: number;
-  name: String;
-  iconUrl: String;
+  name: string;
+  iconUrl: string;
   userApp?: UserApp;
 
   constructor(data: Skill) {
@@ -24,9 +24,10 @@ export class SkillDVO {
   }
 }
 
-export interface SkillCreate {
-  name: String;
-  iconUrl: String;
+export interface SkillDTO {
+  id?: number;
+  name: string;
+  iconUrl?: string;
   userApp?: UserApp;
   publishedAt?: Date;
 }
