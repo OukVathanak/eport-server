@@ -1,0 +1,39 @@
+{
+  "kind": "collectionType",
+  "collectionName": "details",
+  "info": {
+    "singularName": "detail",
+    "pluralName": "details",
+    "displayName": "Detail ",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "description": {
+      "type": "text"
+    },
+    "layoutType": {
+      "type": "string",
+      "required": true
+    },
+    "section": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::section.section",
+      "inversedBy": "details"
+    },
+    "images": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::image.image",
+      "mappedBy": "detail"
+    }
+  }
+}

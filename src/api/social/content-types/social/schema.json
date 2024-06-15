@@ -1,0 +1,29 @@
+{
+  "kind": "collectionType",
+  "collectionName": "socials",
+  "info": {
+    "singularName": "social",
+    "pluralName": "socials",
+    "displayName": "Social",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "iconUrl": {
+      "type": "string"
+    },
+    "userApp": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::user-app.user-app",
+      "inversedBy": "socials"
+    }
+  }
+}

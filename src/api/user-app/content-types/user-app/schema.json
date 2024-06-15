@@ -1,0 +1,58 @@
+{
+  "kind": "collectionType",
+  "collectionName": "user_apps",
+  "info": {
+    "singularName": "user-app",
+    "pluralName": "user-apps",
+    "displayName": "User App",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "username": {
+      "type": "string",
+      "unique": true,
+      "required": true
+    },
+    "password": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "isHidden": {
+      "type": "boolean",
+      "default": true
+    },
+    "projects": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::project.project",
+      "mappedBy": "userApp"
+    },
+    "homePage": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::home-page.home-page",
+      "inversedBy": "userApp"
+    },
+    "skills": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::skill.skill",
+      "mappedBy": "userApp"
+    },
+    "socials": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::social.social",
+      "mappedBy": "userApp"
+    }
+  }
+}

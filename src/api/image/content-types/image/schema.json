@@ -1,0 +1,25 @@
+{
+  "kind": "collectionType",
+  "collectionName": "images",
+  "info": {
+    "singularName": "image",
+    "pluralName": "images",
+    "displayName": "Image"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "imageUrl": {
+      "type": "string",
+      "required": true
+    },
+    "detail": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::detail.detail",
+      "inversedBy": "images"
+    }
+  }
+}
