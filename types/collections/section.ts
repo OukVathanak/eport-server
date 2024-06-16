@@ -33,9 +33,12 @@ export interface SectionDTO {
   id?: number;
   type: string;
   publishedAt?: Date;
+  project?: Project;
+  contributors?: Contributor[];
+  details?: Detail[];
 }
 
-export enum SectionTypeEnum {
+export enum SectionType {
   CONTRIBUTOR = "Contributor",
   DETAIL = "Detail",
 }

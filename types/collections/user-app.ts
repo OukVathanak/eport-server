@@ -1,5 +1,6 @@
 import { HomePage } from "./home-page";
 import { Project } from "./project";
+import { Session } from "./session";
 import { Skill } from "./skill";
 import { Social } from "./social";
 
@@ -18,6 +19,7 @@ export interface UserApp {
   homePage?: HomePage;
   skills?: Skill[];
   socials?: Social[];
+  sessions: Session;
 }
 
 export class UserAppDVO {
@@ -32,6 +34,7 @@ export class UserAppDVO {
   homePage?: HomePage;
   skills?: Skill[];
   socials?: Social[];
+  sessions: Session;
 
   constructor(data: UserApp) {
     this.id = data.id;
@@ -45,6 +48,7 @@ export class UserAppDVO {
     this.homePage = data.homePage;
     this.skills = data.skills;
     this.socials = data.socials;
+    this.sessions = data.sessions;
   }
 }
 
@@ -57,4 +61,23 @@ export interface UserAppDTO {
   lastName: string;
   isHidden: boolean;
   publishedAt?: Date;
+  projects?: Project[];
+  homePage?: HomePage;
+  skills?: Skill[];
+  socials?: Social[];
+  sessions: Session;
+}
+
+export interface UserAppQueryParams {
+  sort?: keyof UserApp | Array<keyof UserApp>;
+  where?: Partial<Record<keyof UserApp, any>>;
+  filters?: Partial<Record<keyof UserApp, any>>;
+  populate?: Array<
+    keyof Pick<UserApp, "projects" | "homePage" | "skills" | "socials">
+  >;
+  fields?: keyof UserApp | Array<keyof UserApp>;
+  pagination?: {
+    page?: number;
+    pageSize: number;
+  };
 }

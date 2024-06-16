@@ -37,9 +37,11 @@ export interface DetailDTO {
   description: string;
   layoutType: string;
   publishedAt?: Date;
+  section?: Section;
+  images?: Image[];
 }
 
-export enum DetailTypeEnum {
+export enum DetailType {
   PICTURE_LEFT = "Picture Left",
   PICTURE_RIGHT = "Picture Right",
   PICTURE_MIDDLE = "Picture Middle",

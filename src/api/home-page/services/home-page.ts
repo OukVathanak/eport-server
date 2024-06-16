@@ -43,7 +43,7 @@ export default factories.createCoreService(
         }
       },
 
-      async puttHomePage(payload: HomePageDTO): Promise<HomePageDVO> {
+      async putHomePage(payload: HomePageDTO): Promise<HomePageDVO> {
         try {
           const homePage = (await strapi.entityService.update(
             "api::home-page.home-page",

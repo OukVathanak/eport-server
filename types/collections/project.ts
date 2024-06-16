@@ -1,4 +1,3 @@
-import { HomePage } from "./home-page";
 import { Section } from "./section";
 import { UserApp } from "./user-app";
 
@@ -8,8 +7,10 @@ export interface Project {
   description: string;
   imageUrl: string;
   status: string;
+  publishedAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
   userApp?: UserApp;
-  homePage?: HomePage;
   sections?: Section[];
 }
 
@@ -19,8 +20,8 @@ export class ProjectDVO {
   description: string;
   imageUrl: string;
   status: string;
+  publishedAt?: Date;
   userApp?: UserApp;
-  homePage?: HomePage;
   sections?: Section[];
 
   constructor(data: Project) {
@@ -29,8 +30,8 @@ export class ProjectDVO {
     this.description = data.description;
     this.imageUrl = data.imageUrl;
     this.status = data.status;
+    this.publishedAt = data.publishedAt;
     this.userApp = data.userApp;
-    this.homePage = data.homePage;
     this.sections = data.sections;
   }
 }
@@ -42,9 +43,11 @@ export interface ProjectDTO {
   imageUrl: string;
   status: string;
   publishedAt?: Date;
+  userApp?: UserApp;
+  sections?: Section[];
 }
 
-export enum ProjectStatusEnum {
-  IN_PROGESS = "In Progress",
+export enum ProjectStatus {
+  IN_PROGRESS = "In Progress",
   COMPLETE = "Complete",
 }

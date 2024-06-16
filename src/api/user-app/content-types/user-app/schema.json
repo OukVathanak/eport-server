@@ -61,6 +61,12 @@
     "lastName": {
       "type": "string",
       "required": true
+    },
+    "session": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::session.session",
+      "mappedBy": "userApp"
     }
   }
 }

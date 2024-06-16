@@ -888,6 +888,11 @@ export interface ApiHomePageHomePage extends Schema.CollectionType {
       'oneToOne',
       'api::user-app.user-app'
     >;
+    projects: Attribute.Relation<
+      'api::home-page.home-page',
+      'oneToMany',
+      'api::project.project'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1031,6 +1036,44 @@ export interface ApiSectionSection extends Schema.CollectionType {
   };
 }
 
+export interface ApiSessionSession extends Schema.CollectionType {
+  collectionName: 'sessions';
+  info: {
+    singularName: 'session';
+    pluralName: 'sessions';
+    displayName: 'Session';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    token: Attribute.String;
+    isActive: Attribute.Boolean & Attribute.DefaultTo<true>;
+    expiredAt: Attribute.DateTime;
+    userApp: Attribute.Relation<
+      'api::session.session',
+      'oneToOne',
+      'api::user-app.user-app'
+    >;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::session.session',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::session.session',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface ApiSkillSkill extends Schema.CollectionType {
   collectionName: 'skills';
   info: {
@@ -1143,6 +1186,11 @@ export interface ApiUserAppUserApp extends Schema.CollectionType {
     >;
     firstName: Attribute.String & Attribute.Required;
     lastName: Attribute.String & Attribute.Required;
+    session: Attribute.Relation<
+      'api::user-app.user-app',
+      'oneToOne',
+      'api::session.session'
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1185,6 +1233,7 @@ declare module '@strapi/types' {
       'api::image.image': ApiImageImage;
       'api::project.project': ApiProjectProject;
       'api::section.section': ApiSectionSection;
+      'api::session.session': ApiSessionSession;
       'api::skill.skill': ApiSkillSkill;
       'api::social.social': ApiSocialSocial;
       'api::user-app.user-app': ApiUserAppUserApp;

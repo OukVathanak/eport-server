@@ -25,4 +25,5 @@ export class ImageDTO {
   id?: number;
   imageUrl: string;
   publishedAt?: Date;
+  detail?: Detail;
 }

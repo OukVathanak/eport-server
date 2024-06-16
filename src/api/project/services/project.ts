@@ -14,7 +14,7 @@ export default factories.createCoreService(
   "api::project.project",
   ({ strapi }) => {
     return {
-      async getManyProject(params: QueryParams): Promise<Project[]> {
+      async getManyProject(params: QueryParams): Promise<ProjectDVO[]> {
         try {
           const projects = (await strapi
             .query("api::project.project")
@@ -30,7 +30,7 @@ export default factories.createCoreService(
         }
       },
 
-      async getOneProject(params: QueryParams): Promise<Project> {
+      async getOneProject(params: QueryParams): Promise<ProjectDVO> {
         try {
           const project = (await strapi
             .query("api::project.project")
@@ -51,7 +51,7 @@ export default factories.createCoreService(
           const project = (await strapi.entityService.create(
             "api::project.project",
             { data: payload }
-          )) as ProjectDVO;
+          )) as Project;
 
           return new ProjectDVO(project);
         } catch (error) {
@@ -65,7 +65,7 @@ export default factories.createCoreService(
             "api::project.project",
             payload.id,
             { data: payload }
-          )) as ProjectDVO;
+          )) as Project;
 
           return new ProjectDVO(project);
         } catch (error) {

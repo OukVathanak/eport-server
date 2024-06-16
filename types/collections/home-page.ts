@@ -10,6 +10,7 @@ export interface HomePage {
   createdAt: Date;
   updatedAt: Date;
   userApp?: UserApp;
+  projects?: Project[];
 }
 
 export class HomePageDVO {
@@ -18,6 +19,7 @@ export class HomePageDVO {
   heroDescription: string;
   heroImageUrl: string;
   userApp?: UserApp;
+  projects?: Project[];
 
   constructor(data: HomePage) {
     this.id = data.id;
@@ -25,14 +27,15 @@ export class HomePageDVO {
     this.heroDescription = data.heroDescription;
     this.heroImageUrl = data.heroImageUrl;
     this.userApp = data.userApp;
+    this.projects = data.projects;
   }
 }
 
 export interface HomePageDTO {
   id?: number;
-  heroTitle: string;
-  heroDescription: string;
-  heroImageUrl: string;
+  heroTitle?: string;
+  heroDescription?: string;
+  heroImageUrl?: string;
   publishedAt?: Date;
   userApp?: UserApp;
   projects?: Project[];

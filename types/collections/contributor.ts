@@ -33,4 +33,5 @@ export class ContributorDTO {
   description: string;
   imageUrl: string;
   publishedAt?: Date;
+  section?: Section;
 }

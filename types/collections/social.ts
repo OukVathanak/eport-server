@@ -28,6 +28,6 @@ export interface SocialDTO {
   id?: number;
   name: string;
   link: string;
-  userApp?: UserApp;
   publishedAt?: Date;
+  userApp?: UserApp;
 }

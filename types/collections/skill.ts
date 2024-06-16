@@ -28,6 +28,6 @@ export interface SkillDTO {
   id?: number;
   name: string;
   iconUrl?: string;
-  userApp?: UserApp;
   publishedAt?: Date;
+  userApp?: UserApp;
 }
