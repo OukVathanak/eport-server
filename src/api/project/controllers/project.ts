@@ -3,7 +3,11 @@
  */
 
 import { factories } from "@strapi/strapi";
-import { Project } from "../../../../types/collections/project";
+import {
+  Project,
+  ProjectDTO,
+  ProjectStatus,
+} from "../../../../types/collections/project";
 import { QueryParams } from "../../../utils/interface";
 import {
   APIResponse,
@@ -12,11 +16,13 @@ import {
   createSuccessResponse,
 } from "../../../utils/response";
 import { UserApp } from "../../../../types/collections/user-app";
+import { fetchUserAndProjects } from "../../../utils/helpers";
 
 export default factories.createCoreController(
   "api::project.project",
   ({ strapi }) => {
     return {
+      // ---------- Fine one project ----------
       async findProject(ctx) {
         try {
           // Get id from param;
@@ -62,39 +68,56 @@ export default factories.createCoreController(
         }
       },
 
+      // ---------- Find all projects ----------
       async allProject(ctx) {
         try {
-          // Get user from context
-          const user: UserApp = ctx.state.user;
-
-          // Query params
-          const queryParams: QueryParams = {
-            where: {
-              id: { $eq: user.id },
-            },
-            populate: { projects: true },
-          };
-
-          // Query user projects
-          const findUser: UserApp = await strapi
-            .service("api::user-app.user-app")
-            .getOneUserApp(queryParams);
-
-          // Check if user exist
-          if (!findUser) {
-            const response: APIResponse = createErrorResponse(
-              HTTPCode.UNAUTHORIZE
-            );
-            ctx.throw(response.statusCode, response.error);
-          }
-
           // User projects
-          const projects: Project[] = findUser.projects;
+          const projects: Project[] = await fetchUserAndProjects(ctx);
 
           // Response
           const response: APIResponse = createSuccessResponse(
             HTTPCode.SUCCESS,
             { projects }
+          );
+          ctx.send(response, response.statusCode);
+        } catch (error) {
+          ctx.throw(error.statusCode, error.message);
+        }
+      },
+
+      // ---------- Create project ----------
+      async createProject(ctx) {
+        try {
+          const user: UserApp = ctx.state.user;
+          const params: ProjectDTO = ctx.request.body;
+
+          // Get projects of the user
+          const projects: Project[] = await fetchUserAndProjects(ctx);
+
+          // Get highest order
+          const highestOrder: number = projects.reduce((max, project) => {
+            return project.order > max ? project.order : max;
+          }, 0);
+
+          // Project payload
+          const projectPayload: ProjectDTO = {
+            name: params.name,
+            description: params.description,
+            imageUrl: params.imageUrl,
+            status: params.status,
+            order: highestOrder + 1,
+            userApp: user.id,
+          };
+
+          // Create project
+          await strapi
+            .service("api::project.project")
+            .postProject(projectPayload);
+
+          // Response
+          const response: APIResponse = createSuccessResponse(
+            HTTPCode.SUCCESS,
+            {}
           );
           ctx.send(response, response.statusCode);
         } catch (error) {

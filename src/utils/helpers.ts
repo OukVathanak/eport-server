@@ -1,5 +1,15 @@
 import bcrypt from "bcrypt";
 import crypto from "crypto";
+import { UserApp } from "../../types/collections/user-app";
+import { QueryParams } from "./interface";
+import project from "../api/project/controllers/project";
+import {
+  APIResponse,
+  HTTPCode,
+  createErrorResponse,
+  createSuccessResponse,
+} from "./response";
+import { Project } from "../../types/collections/project";
 
 // ---------- Hash Password ----------
 export const hashPassword = async (password: string): Promise<string> => {
@@ -46,4 +56,35 @@ export const extractDateFromString = (input: string): Date => {
   const multiplier = durationMultipliers[duration] || durationMultipliers["d"];
 
   return new Date(currentDate.getTime() + time * multiplier);
+};
+
+// ---------- Create project order ----------
+export const fetchUserAndProjects = async (ctx) => {
+  try {
+    // Get user from context
+    const user: UserApp = ctx.state.user;
+
+    // Query params
+    const queryParams: QueryParams = {
+      where: {
+        id: { $eq: user.id },
+      },
+      populate: { projects: true },
+    };
+
+    // Query user projects
+    const userApp: UserApp = await strapi
+      .service("api::user-app.user-app")
+      .getOneUserApp(queryParams);
+
+    // Check if user exist
+    if (!userApp) {
+      const response: APIResponse = createErrorResponse(HTTPCode.UNAUTHORIZE);
+      ctx.throw(response.statusCode, response.error);
+    }
+
+    return userApp.projects;
+  } catch (error) {
+    ctx.throw(error.statusCode, error.message);
+  }
 };

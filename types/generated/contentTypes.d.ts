@@ -971,6 +971,7 @@ export interface ApiProjectProject extends Schema.CollectionType {
       'oneToMany',
       'api::section.section'
     >;
+    order: Attribute.Integer & Attribute.Required & Attribute.Unique;
     status: Attribute.String & Attribute.Required;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;

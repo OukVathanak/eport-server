@@ -3,6 +3,7 @@ import { UserApp } from "./user-app";
 
 export interface Project {
   id: number;
+  order: number;
   name: string;
   description: string;
   imageUrl: string;
@@ -16,6 +17,7 @@ export interface Project {
 
 export class ProjectDVO {
   id: number;
+  order: number;
   name: string;
   description: string;
   imageUrl: string;
@@ -26,6 +28,7 @@ export class ProjectDVO {
 
   constructor(data: Project) {
     this.id = data.id;
+    this.order = data.order;
     this.name = data.name;
     this.description = data.description;
     this.imageUrl = data.imageUrl;
@@ -38,12 +41,13 @@ export class ProjectDVO {
 
 export interface ProjectDTO {
   id?: number;
+  order: number;
   name: string;
   description: string;
   imageUrl: string;
-  status: string;
+  status: ProjectStatus;
   publishedAt?: Date;
-  userApp?: UserApp;
+  userApp?: UserApp | number;
   sections?: Section[];
 }
 

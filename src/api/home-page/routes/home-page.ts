@@ -10,7 +10,7 @@ module.exports = {
   routes: [
     {
       method: "GET",
-      path: "/:username",
+      path: "/home-page/:username",
       handler: "home-page.findHomePage",
       config: {
         auth: false,
