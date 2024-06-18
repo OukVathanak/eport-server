@@ -31,9 +31,9 @@ export default factories.createCoreController(
             },
             populate: {
               homePage: true,
-              skills: true,
-              socials: true,
-              projects: true,
+              skills: { where: { publishedAt: { $null: false } } },
+              socials: { where: { publishedAt: { $null: false } } },
+              projects: { where: { publishedAt: { $null: false } } },
             },
           };
 
@@ -47,7 +47,7 @@ export default factories.createCoreController(
             const response: APIResponse = createErrorResponse(
               HTTPCode.NOT_FOUND
             );
-            ctx.throw(response.statusCode, response.error);
+            ctx.throw(response.statusCode, "User not found");
           }
 
           // Response

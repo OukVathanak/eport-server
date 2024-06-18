@@ -11,6 +11,7 @@ import {
   createErrorResponse,
   createSuccessResponse,
 } from "../../../utils/response";
+import { UserApp } from "../../../../types/collections/user-app";
 
 export default factories.createCoreController(
   "api::project.project",
@@ -24,7 +25,7 @@ export default factories.createCoreController(
           // Project query params
           const projectQueryParams: QueryParams = {
             where: {
-              $and: [{ id: { $eq: id } }, { publishedAt: { $null: false } }],
+              $and: [{ id: { $eq: id } }],
             },
             populate: {
               userApp: { where: { isHidden: { $eq: false } } },
@@ -47,13 +48,53 @@ export default factories.createCoreController(
             const response: APIResponse = createErrorResponse(
               HTTPCode.NOT_FOUND
             );
-            ctx.throw(response.statusCode, response.error);
+            ctx.throw(response.statusCode, "Project not found");
           }
 
           // Response
           const response: APIResponse = createSuccessResponse(
             HTTPCode.SUCCESS,
             project
+          );
+          ctx.send(response, response.statusCode);
+        } catch (error) {
+          ctx.throw(error.statusCode, error.message);
+        }
+      },
+
+      async allProject(ctx) {
+        try {
+          // Get user from context
+          const user: UserApp = ctx.state.user;
+
+          // Query params
+          const queryParams: QueryParams = {
+            where: {
+              id: { $eq: user.id },
+            },
+            populate: { projects: true },
+          };
+
+          // Query user projects
+          const findUser: UserApp = await strapi
+            .service("api::user-app.user-app")
+            .getOneUserApp(queryParams);
+
+          // Check if user exist
+          if (!findUser) {
+            const response: APIResponse = createErrorResponse(
+              HTTPCode.UNAUTHORIZE
+            );
+            ctx.throw(response.statusCode, response.error);
+          }
+
+          // User projects
+          const projects: Project[] = findUser.projects;
+
+          // Response
+          const response: APIResponse = createSuccessResponse(
+            HTTPCode.SUCCESS,
+            { projects }
           );
           ctx.send(response, response.statusCode);
         } catch (error) {

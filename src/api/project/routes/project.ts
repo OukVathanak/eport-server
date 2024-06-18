@@ -2,6 +2,7 @@
  * project router
  */
 
+import auth from "../../../middlewares/auth";
 import validateRequest from "../../../middlewares/request-validation";
 
 // import { factories } from '@strapi/strapi';
@@ -16,6 +17,15 @@ module.exports = {
       config: {
         auth: false,
         middlewares: [],
+      },
+    },
+    {
+      method: "GET",
+      path: "/projects",
+      handler: "project.allProject",
+      config: {
+        auth: false,
+        middlewares: [auth()],
       },
     },
   ],

@@ -31,7 +31,7 @@ const authentication = () => {
         const findSession: Session = await strapi
           .service("api::session.session")
           .getOneSession({
-            where: { sessionToken: { $eq: decodedToken.jwt.sessionToken } },
+            where: { token: { $eq: decodedToken.jwt.sessionToken } },
           });
 
         if (findSession && !findSession.isActive) {

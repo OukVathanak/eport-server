@@ -1,6 +1,6 @@
 import { HomePageDTO } from "../../../../../types/collections/home-page";
 import { UserApp } from "../../../../../types/collections/user-app";
-import { hashPassword, validatePassword } from "../../../../utils/helpers";
+import { hashPassword } from "../../../../utils/helpers";
 import { QueryParams } from "../../../../utils/interface";
 
 export default {
