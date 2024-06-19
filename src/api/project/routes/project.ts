@@ -32,8 +32,17 @@ module.exports = {
     },
     {
       method: "POST",
-      path: "/project",
+      path: "/projects",
       handler: "project.createProject",
+      config: {
+        auth: false,
+        middlewares: [auth()],
+      },
+    },
+    {
+      method: "PUT",
+      path: "/project/:id",
+      handler: "project.updateProject",
       config: {
         auth: false,
         middlewares: [auth()],

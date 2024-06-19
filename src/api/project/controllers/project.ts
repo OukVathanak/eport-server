@@ -17,6 +17,7 @@ import {
 } from "../../../utils/response";
 import { UserApp } from "../../../../types/collections/user-app";
 import { fetchUserAndProjects } from "../../../utils/helpers";
+import image from "../../image/controllers/image";
 
 export default factories.createCoreController(
   "api::project.project",
@@ -118,6 +119,45 @@ export default factories.createCoreController(
           const response: APIResponse = createSuccessResponse(
             HTTPCode.SUCCESS,
             {}
+          );
+          ctx.send(response, response.statusCode);
+        } catch (error) {
+          ctx.throw(error.statusCode, error.message);
+        }
+      },
+
+      // ---------- Update Project ----------
+      async updateProject(ctx) {
+        try {
+          // Get user from context
+          const user: UserApp = ctx.state.user;
+
+          // User query param
+          const userQueryParams: QueryParams = {
+            where: {
+              id: { $eq: user.id },
+            },
+            populate: {
+              projects: true,
+            },
+          };
+
+          // Get user
+          const userApp: UserApp = await strapi
+            .service("api::user-app.user-app")
+            .getOneUserApp(userQueryParams);
+
+          // Check if user exist
+          if (!userApp) {
+            const response: APIResponse = createErrorResponse(
+              HTTPCode.FORBIDDEN
+            );
+            ctx.throw(response.statusCode, response.error);
+          }
+
+          const response: APIResponse = createSuccessResponse(
+            HTTPCode.SUCCESS,
+            { userApp }
           );
           ctx.send(response, response.statusCode);
         } catch (error) {
