@@ -7,7 +7,7 @@ export interface Project {
   name: string;
   description: string;
   imageUrl: string;
-  status: string;
+  status: ProjectStatus;
   publishedAt?: Date;
   createdAt: Date;
   updatedAt: Date;
@@ -21,7 +21,7 @@ export class ProjectDVO {
   name: string;
   description: string;
   imageUrl: string;
-  status: string;
+  status: ProjectStatus;
   publishedAt?: Date;
   userApp?: UserApp;
   sections?: Section[];

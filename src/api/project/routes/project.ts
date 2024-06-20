@@ -48,5 +48,14 @@ module.exports = {
         middlewares: [auth()],
       },
     },
+    {
+      method: "DELETE",
+      path: "/project/:id",
+      handler: "project.deleteProject",
+      config: {
+        auth: false,
+        middlewares: [auth()],
+      },
+    },
   ],
 };
