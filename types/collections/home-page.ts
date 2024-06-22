@@ -1,3 +1,4 @@
+import { number } from "joi";
 import { Project } from "./project";
 import { UserApp } from "./user-app";
 
@@ -37,6 +38,6 @@ export interface HomePageDTO {
   heroDescription?: string;
   heroImageUrl?: string;
   publishedAt?: Date;
-  userApp?: UserApp;
+  userApp?: UserApp | number;
   projects?: Project[];
 }

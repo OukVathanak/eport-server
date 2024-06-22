@@ -37,7 +37,7 @@
     "order": {
       "type": "integer",
       "required": true,
-      "unique": true
+      "unique": false
     },
     "status": {
       "type": "string",

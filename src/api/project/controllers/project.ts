@@ -75,6 +75,9 @@ export default factories.createCoreController(
           // User projects
           const projects: Project[] = await fetchUserAndProjects(ctx);
 
+          // Sort projects
+          projects.sort((a, b) => b.order - a.order);
+
           // Response
           const response: APIResponse = createSuccessResponse(
             HTTPCode.SUCCESS,
@@ -131,14 +134,19 @@ export default factories.createCoreController(
         try {
           // Get user from context
           const user: UserApp = ctx.state.user;
+          const { id } = ctx.params;
 
-          // User query param
+          // User and populate project query param
           const userQueryParams: QueryParams = {
             where: {
               id: { $eq: user.id },
             },
             populate: {
-              projects: true,
+              projects: {
+                where: {
+                  id: { $eq: id },
+                },
+              },
             },
           };
 
@@ -155,9 +163,116 @@ export default factories.createCoreController(
             ctx.throw(response.statusCode, response.error);
           }
 
+          // Check if project exist
+          if (!userApp.projects[0] || userApp.projects.length === 0) {
+            const response: APIResponse = createErrorResponse(
+              HTTPCode.NOT_FOUND
+            );
+            ctx.throw(response.statusCode, response.error);
+          }
+
+          // Request body
+          const payload: ProjectDTO = ctx.request.body;
+
+          // Loop through all projects to check for order update
+          const allProjects: Project[] = await fetchUserAndProjects(ctx);
+          let updatedOrder = payload.order;
+
+          // If updated project order is smaller or equal another project order, we update project order that is equal and less than the updated order
+          for (const project of allProjects) {
+            if (payload.order <= project.order) {
+              // Increment updated order
+              updatedOrder++;
+
+              // Update project order
+              let updatedOrderPayload: Project = project;
+              updatedOrderPayload.order = updatedOrder;
+              await strapi
+                .service("api::project.project")
+                .putProject(updatedOrderPayload);
+            }
+          }
+
+          // Update project payload
+          const updatePayload: ProjectDTO = {
+            id: id,
+            name: payload.name,
+            description: payload.description,
+            imageUrl: payload.imageUrl,
+            status: payload.status,
+            order: payload.order,
+            userApp: user.id,
+          };
+
+          // Update project
+          const updatedProject: Project = await strapi
+            .service("api::project.project")
+            .putProject(updatePayload);
+
+          // Fetch updated all projects
+          const updatedAllProjects: Project[] = await fetchUserAndProjects(ctx);
+
+          // Sort projects
+          updatedAllProjects.sort((a, b) => b.order - a.order);
+
           const response: APIResponse = createSuccessResponse(
             HTTPCode.SUCCESS,
-            { userApp }
+            { updatedProject, updatedAllProjects }
+          );
+          ctx.send(response, response.statusCode);
+        } catch (error) {
+          ctx.throw(error.statusCode, error.message);
+        }
+      },
+
+      // ---------- Delete Project ----------
+      async deleteProject(ctx) {
+        try {
+          // Get user from context
+          const user: UserApp = ctx.state.user;
+          const { id } = ctx.params;
+
+          // User and populate project query param
+          const userQueryParams: QueryParams = {
+            where: {
+              id: { $eq: user.id },
+            },
+            populate: {
+              projects: {
+                where: {
+                  id: { $eq: id },
+                },
+              },
+            },
+          };
+
+          // Get user
+          const userApp: UserApp = await strapi
+            .service("api::user-app.user-app")
+            .getOneUserApp(userQueryParams);
+
+          // Check if user exist
+          if (!userApp) {
+            const response: APIResponse = createErrorResponse(
+              HTTPCode.FORBIDDEN
+            );
+            ctx.throw(response.statusCode, response.error);
+          }
+
+          // Check if project exist
+          if (!userApp.projects || userApp.projects.length === 0) {
+            const response: APIResponse = createErrorResponse(
+              HTTPCode.NOT_FOUND
+            );
+            ctx.throw(response.statusCode, response.error);
+          }
+
+          // Delete project
+          await strapi.service("api::project.project").deleteProject(id);
+
+          const response: APIResponse = createSuccessResponse(
+            HTTPCode.SUCCESS,
+            {}
           );
           ctx.send(response, response.statusCode);
         } catch (error) {

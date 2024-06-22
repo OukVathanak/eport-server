@@ -11,11 +11,13 @@ import {
   createErrorResponse,
   createSuccessResponse,
 } from "../../../utils/response";
+import { HomePage, HomePageDTO } from "../../../../types/collections/home-page";
 
 export default factories.createCoreController(
   "api::home-page.home-page",
   ({ strapi }) => {
     return {
+      // ---------- Find Homepage ----------
       async findHomePage(ctx) {
         try {
           // Get user from params
@@ -54,6 +56,57 @@ export default factories.createCoreController(
           const response: APIResponse = createSuccessResponse(
             HTTPCode.SUCCESS,
             { user }
+          );
+          ctx.send(response, response.statusCode);
+        } catch (error) {
+          ctx.throw(error.statusCode, error.message);
+        }
+      },
+
+      // ---------- Update Homepage ----------
+      async updateHomePage(ctx) {
+        try {
+          // Get user from context
+          const user: UserApp = ctx.state.user;
+
+          // Query for user
+          const queryParams: QueryParams = {
+            where: {
+              id: { $eq: user.id },
+            },
+          };
+
+          // Fetch user
+          const userApp: UserApp = await strapi
+            .service("api::home-page.home-page")
+            .getOneHomePage(queryParams);
+
+          // Check if user exist
+          if (!userApp) {
+            const response: APIResponse = createErrorResponse(
+              HTTPCode.UNAUTHORIZE
+            );
+            ctx.throw(response.statusCode, response.error);
+          }
+
+          // Homepage payload
+          const payload: HomePageDTO = ctx.request.body;
+          const homePagePayload: HomePageDTO = {
+            id: 1,
+            heroTitle: payload.heroTitle,
+            heroDescription: payload.heroDescription,
+            heroImageUrl: payload.heroImageUrl,
+            userApp: user.id,
+          };
+
+          // Update homepage
+          const homePage: HomePage = await strapi
+            .service("api::home-page.home-page")
+            .putHomePage(homePagePayload);
+
+          const response: APIResponse = createSuccessResponse(
+            HTTPCode.SUCCESS,
+            { homePage }
           );
           ctx.send(response, response.statusCode);
         } catch (error) {

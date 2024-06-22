@@ -72,6 +72,20 @@ export default factories.createCoreService(
           throw new Error(error);
         }
       },
+
+      async deleteProject(id: number): Promise<ProjectDVO> {
+        try {
+          const project = (await strapi.entityService.delete(
+            "api::project.project",
+            id,
+            {}
+          )) as Project;
+
+          return project;
+        } catch (error) {
+          throw new Error(error);
+        }
+      },
     };
   }
 );
