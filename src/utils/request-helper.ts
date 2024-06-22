@@ -27,12 +27,12 @@ export class RequestHelper {
     return param;
   }
 
-  public getCurrentUser(): any {
-    return this.context.state.user || null;
-  }
-
   public getQuery(field: string): string | null {
     const query: string | undefined = this.context.query[field];
     return query || null;
+  }
+
+  public getCurrentUser(): any {
+    return this.context.state.user || null;
   }
 }
