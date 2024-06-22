@@ -69,7 +69,9 @@ export const fetchUserAndProjects = async (ctx) => {
       where: {
         id: { $eq: user.id },
       },
-      populate: { projects: true },
+      populate: {
+        projects: true,
+      },
     };
 
     // Query user projects

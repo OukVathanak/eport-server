@@ -75,6 +75,9 @@ export default factories.createCoreController(
           // User projects
           const projects: Project[] = await fetchUserAndProjects(ctx);
 
+          // Sort projects
+          projects.sort((a, b) => b.order - a.order);
+
           // Response
           const response: APIResponse = createSuccessResponse(
             HTTPCode.SUCCESS,
@@ -132,7 +135,6 @@ export default factories.createCoreController(
           // Get user from context
           const user: UserApp = ctx.state.user;
           const { id } = ctx.params;
-          const { newOrder } = ctx.request.body;
 
           // User and populate project query param
           const userQueryParams: QueryParams = {
@@ -169,8 +171,29 @@ export default factories.createCoreController(
             ctx.throw(response.statusCode, response.error);
           }
 
-          // Update payload
+          // Request body
           const payload: ProjectDTO = ctx.request.body;
+
+          // Loop through all projects to check for order update
+          const allProjects: Project[] = await fetchUserAndProjects(ctx);
+          let updatedOrder = payload.order;
+
+          // If updated project order is smaller or equal another project order, we update project order that is equal and less than the updated order
+          for (const project of allProjects) {
+            if (payload.order <= project.order) {
+              // Increment updated order
+              updatedOrder++;
+
+              // Update project order
+              let updatedOrderPayload: Project = project;
+              updatedOrderPayload.order = updatedOrder;
+              await strapi
+                .service("api::project.project")
+                .putProject(updatedOrderPayload);
+            }
+          }
+
+          // Update project payload
           const updatePayload: ProjectDTO = {
             id: id,
             name: payload.name,
@@ -181,33 +204,20 @@ export default factories.createCoreController(
             userApp: user.id,
           };
 
-          // Loop through all projects to check for order update
-          const allProjects: Project[] = await fetchUserAndProjects(ctx);
-          let updatedOrder = newOrder;
+          // Update project
+          const updatedProject: Project = await strapi
+            .service("api::project.project")
+            .putProject(updatePayload);
 
-          // If updated project order is smaller or equal another project order, we update project order that is equal and less than the updated order
-          for (const project of allProjects) {
-            if (newOrder <= project.order) {
-              updatedOrder++;
-              // const updatedOrderPayload1: ProjectDTO = {
-              //   id: project.id,
-              //   name: project.name,
-              //   description: project.description,
-              //   imageUrl: project.imageUrl,
-              //   status: project.status,
-              //   order: updatedOrder,
-              // };
-              let updatedOrderPayload: Project = project;
-              updatedOrderPayload.order = updatedOrder;
-              await strapi
-                .service("api::project.project")
-                .putProject(updatedOrderPayload);
-            }
-          }
+          // Fetch updated all projects
+          const updatedAllProjects: Project[] = await fetchUserAndProjects(ctx);
+
+          // Sort projects
+          updatedAllProjects.sort((a, b) => b.order - a.order);
 
           const response: APIResponse = createSuccessResponse(
             HTTPCode.SUCCESS,
-            { userApp, allProjects }
+            { updatedProject, updatedAllProjects }
           );
           ctx.send(response, response.statusCode);
         } catch (error) {
