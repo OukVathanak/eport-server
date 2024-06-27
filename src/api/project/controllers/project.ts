@@ -19,6 +19,7 @@ import {
 import { UserApp } from "../../../../types/collections/user-app";
 import { fetchUserAndProjects } from "../../../utils/helpers";
 import image from "../../image/controllers/image";
+import { RequestHelper } from "../../../utils/request-helper";
 
 export default factories.createCoreController(
   "api::project.project",
@@ -81,9 +82,6 @@ export default factories.createCoreController(
           // User projects
           const projects: Project[] = await fetchUserAndProjects(ctx);
 
-          // Sort projects
-          projects.sort((a, b) => b.order - a.order);
-
           // Response
           const response: APIResponse = createSuccessResponse(
             HTTPCode.SUCCESS,
@@ -140,19 +138,14 @@ export default factories.createCoreController(
         try {
           // Get user from context
           const user: UserApp = ctx.state.user;
-          const { id } = ctx.params;
 
-          // User and populate project query param
+          // User query param
           const userQueryParams: QueryParams = {
             where: {
               id: { $eq: user.id },
             },
             populate: {
-              projects: {
-                where: {
-                  id: { $eq: id },
-                },
-              },
+              projects: true,
             },
           };
 
@@ -169,61 +162,9 @@ export default factories.createCoreController(
             ctx.throw(response.statusCode, response.error);
           }
 
-          // Check if project exist
-          if (!userApp.projects[0] || userApp.projects.length === 0) {
-            const response: APIResponse = createErrorResponse(
-              HTTPCode.NOT_FOUND
-            );
-            ctx.throw(response.statusCode, response.error);
-          }
-
-          // Request body
-          const payload: ProjectDTO = ctx.request.body;
-
-          // Loop through all projects to check for order update
-          const allProjects: Project[] = await fetchUserAndProjects(ctx);
-          let updatedOrder = payload.order;
-
-          // If updated project order is smaller or equal another project order, we update project order that is equal and less than the updated order
-          for (const project of allProjects) {
-            if (payload.order <= project.order) {
-              // Increment updated order
-              updatedOrder++;
-
-              // Update project order
-              let updatedOrderPayload: Project = project;
-              updatedOrderPayload.order = updatedOrder;
-              await strapi
-                .service("api::project.project")
-                .putProject(updatedOrderPayload);
-            }
-          }
-
-          // Update project payload
-          const updatePayload: ProjectDTO = {
-            id: id,
-            name: payload.name,
-            description: payload.description,
-            imageUrl: payload.imageUrl,
-            status: payload.status,
-            order: payload.order,
-            userApp: user.id,
-          };
-
-          // Update project
-          const updatedProject: Project = await strapi
-            .service("api::project.project")
-            .putProject(updatePayload);
-
-          // Fetch updated all projects
-          const updatedAllProjects: Project[] = await fetchUserAndProjects(ctx);
-
-          // Sort projects
-          updatedAllProjects.sort((a, b) => b.order - a.order);
-
           const response: APIResponse = createSuccessResponse(
             HTTPCode.SUCCESS,
-            { updatedProject, updatedAllProjects }
+            { userApp }
           );
           ctx.send(response, response.statusCode);
         } catch (error) {
@@ -234,39 +175,43 @@ export default factories.createCoreController(
       // ---------- Delete Project ----------
       async deleteProject(ctx) {
         try {
-          // Get user from context
-          const user: UserApp = ctx.state.user;
-          const { id } = ctx.params;
+          const requestHelper = new RequestHelper(ctx);
 
-          // User and populate project query param
-          const userQueryParams: QueryParams = {
+          // Get user from context
+          const user: UserApp = requestHelper.getCurrentUser();
+
+          // Get project
+          const projectId: string = requestHelper.getParam("id");
+
+          // Query param to check for user and project
+          const queryParams: QueryParams = {
             where: {
               id: { $eq: user.id },
             },
             populate: {
               projects: {
                 where: {
-                  id: { $eq: id },
+                  id: { $eq: projectId },
                 },
               },
             },
           };
 
-          // Get user
+          // Find user and project
           const userApp: UserApp = await strapi
             .service("api::user-app.user-app")
-            .getOneUserApp(userQueryParams);
+            .getOneUserApp(queryParams);
 
           // Check if user exist
           if (!userApp) {
             const response: APIResponse = createErrorResponse(
-              HTTPCode.FORBIDDEN
+              HTTPCode.UNAUTHORIZE
             );
             ctx.throw(response.statusCode, response.error);
           }
 
           // Check if project exist
-          if (!userApp.projects || userApp.projects.length === 0) {
+          if (!userApp.projects[0] || userApp.projects.length == 0) {
             const response: APIResponse = createErrorResponse(
               HTTPCode.NOT_FOUND
             );
@@ -274,12 +219,10 @@ export default factories.createCoreController(
           }
 
           // Delete project
-          await strapi.service("api::project.project").deleteProject(id);
+          await strapi.service("api::project.project").deleteProject(projectId);
 
-          const response: APIResponse = createSuccessResponse(
-            HTTPCode.SUCCESS,
-            {}
-          );
+          const response: APIResponse = createSuccessResponse(HTTPCode.SUCCESS);
+
           ctx.send(response, response.statusCode);
         } catch (error) {
           ctx.throw(error.statusCode, error.message);
