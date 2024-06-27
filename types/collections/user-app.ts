@@ -1,3 +1,4 @@
+import { QueryParams } from "../../src/utils/query-params";
 import { HomePage } from "./home-page";
 import { Project } from "./project";
 import { Session } from "./session";
@@ -21,6 +22,8 @@ export interface UserApp {
   socials?: Social[];
   sessions: Session;
 }
+
+export interface UserAppQueryParams extends QueryParams<UserApp> {}
 
 export class UserAppDVO {
   id: number;
@@ -68,16 +71,16 @@ export interface UserAppDTO {
   sessions: Session;
 }
 
-export interface UserAppQueryParams {
-  sort?: keyof UserApp | Array<keyof UserApp>;
-  where?: Partial<Record<keyof UserApp, any>>;
-  filters?: Partial<Record<keyof UserApp, any>>;
-  populate?: Array<
-    keyof Pick<UserApp, "projects" | "homePage" | "skills" | "socials">
-  >;
-  fields?: keyof UserApp | Array<keyof UserApp>;
-  pagination?: {
-    page?: number;
-    pageSize: number;
-  };
-}
+// export interface UserAppQueryParams {
+//   sort?: keyof UserApp | Array<keyof UserApp>;
+//   where?: Partial<Record<keyof UserApp, any>>;
+//   filters?: Partial<Record<keyof UserApp, any>>;
+//   populate?: Array<
+//     keyof Pick<UserApp, "projects" | "homePage" | "skills" | "socials">
+//   >;
+//   fields?: keyof UserApp | Array<keyof UserApp>;
+//   pagination?: {
+//     page?: number;
+//     pageSize: number;
+//   };
+// }

@@ -1,3 +1,4 @@
+import { QueryParams } from "../../src/utils/query-params";
 import { Section } from "./section";
 import { UserApp } from "./user-app";
 
@@ -14,6 +15,8 @@ export interface Project {
   userApp?: UserApp;
   sections?: Section[];
 }
+
+export interface ProjectQueryParams extends QueryParams<Project> {}
 
 export class ProjectDVO {
   id: number;

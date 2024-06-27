@@ -6,6 +6,7 @@ import { factories } from "@strapi/strapi";
 import {
   Project,
   ProjectDTO,
+  ProjectQueryParams,
   ProjectStatus,
 } from "../../../../types/collections/project";
 import { QueryParams } from "../../../utils/interface";
@@ -28,6 +29,11 @@ export default factories.createCoreController(
         try {
           // Get id from param;
           const { id } = ctx.params;
+
+          const testParam: ProjectQueryParams = {
+            where: { $and: [{ publishedAt: { $null: false } }, {}] },
+            populate: {userApp: {where: {}}}
+          };
 
           // Project query params
           const projectQueryParams: QueryParams = {
