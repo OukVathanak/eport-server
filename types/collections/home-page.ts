@@ -1,6 +1,5 @@
-import { number } from "joi";
-import { Project } from "./project";
-import { UserApp } from "./user-app";
+ import { UserApp } from "./user-app";
+import { QueryParams } from "../../src/utils/query-params";
 
 export interface HomePage {
   id: number;
@@ -11,8 +10,9 @@ export interface HomePage {
   createdAt: Date;
   updatedAt: Date;
   userApp?: UserApp;
-  projects?: Project[];
 }
+
+export interface HomePageQueryParams extends QueryParams<HomePage> {}
 
 export class HomePageDVO {
   id: number;
@@ -20,7 +20,6 @@ export class HomePageDVO {
   heroDescription: string;
   heroImageUrl: string;
   userApp?: UserApp;
-  projects?: Project[];
 
   constructor(data: HomePage) {
     this.id = data.id;
@@ -28,7 +27,6 @@ export class HomePageDVO {
     this.heroDescription = data.heroDescription;
     this.heroImageUrl = data.heroImageUrl;
     this.userApp = data.userApp;
-    this.projects = data.projects;
   }
 }
 
@@ -39,5 +37,4 @@ export interface HomePageDTO {
   heroImageUrl?: string;
   publishedAt?: Date;
   userApp?: UserApp | number;
-  projects?: Project[];
 }

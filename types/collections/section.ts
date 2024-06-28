@@ -1,3 +1,4 @@
+import { QueryParams } from "../../src/utils/query-params";
 import { Contributor } from "./contributor";
 import { Detail } from "./detail";
 import { Project } from "./project";
@@ -12,6 +13,8 @@ export interface Section {
   contributors?: Contributor[];
   details?: Detail[];
 }
+
+export interface SectionQueryParams extends QueryParams<Section> {} 
 
 export class SectionDVO {
   id: number;

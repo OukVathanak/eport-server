@@ -3,18 +3,18 @@
  */
 
 import { factories } from "@strapi/strapi";
-import { QueryParams } from "../../../utils/interface";
 import {
   Project,
   ProjectDTO,
   ProjectDVO,
+  ProjectQueryParams,
 } from "../../../../types/collections/project";
 
 export default factories.createCoreService(
   "api::project.project",
   ({ strapi }) => {
     return {
-      async getManyProject(params: QueryParams): Promise<ProjectDVO[]> {
+      async getManyProject(params: ProjectQueryParams): Promise<ProjectDVO[]> {
         try {
           const projects = (await strapi
             .query("api::project.project")
@@ -30,7 +30,7 @@ export default factories.createCoreService(
         }
       },
 
-      async getOneProject(params: QueryParams): Promise<ProjectDVO> {
+      async getOneProject(params: ProjectQueryParams): Promise<ProjectDVO> {
         try {
           const project = (await strapi
             .query("api::project.project")

@@ -4,8 +4,7 @@
 
 import { factories } from "@strapi/strapi";
 import { LoginDTO } from "../../../../types/requests/login";
-import { UserApp } from "../../../../types/collections/user-app";
-import { QueryParams } from "../../../utils/interface";
+import { UserApp, UserAppQueryParams } from "../../../../types/collections/user-app";
 import {
   APIResponse,
   HTTPCode,
@@ -26,7 +25,7 @@ export default factories.createCoreController(
           const requestBody: LoginDTO = ctx.request.body;
 
           // User query params
-          const userQueryParams: QueryParams = {
+          const userQueryParams: UserAppQueryParams = {
             where: {
               $or: [
                 { username: { $eq: requestBody.identifier } },

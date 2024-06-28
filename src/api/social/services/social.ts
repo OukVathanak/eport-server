@@ -3,18 +3,18 @@
  */
 
 import { factories } from "@strapi/strapi";
-import { QueryParams } from "../../../utils/interface";
 import {
   Social,
   SocialDTO,
   SocialDVO,
+  SocialQueryParams,
 } from "../../../../types/collections/social";
 
 export default factories.createCoreService(
   "api::social.social",
   ({ strapi }) => {
     return {
-      async getManySocial(params: QueryParams): Promise<SocialDVO[]> {
+      async getManySocial(params: SocialQueryParams): Promise<SocialDVO[]> {
         try {
           const socials = (await strapi
             .query("api::social.social")
@@ -30,7 +30,7 @@ export default factories.createCoreService(
         }
       },
 
-      async getOneSocial(params: QueryParams): Promise<SocialDVO> {
+      async getOneSocial(params: SocialQueryParams): Promise<SocialDVO> {
         try {
           const social = (await strapi
             .query("api::social.social")

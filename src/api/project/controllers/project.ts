@@ -7,18 +7,15 @@ import {
   Project,
   ProjectDTO,
   ProjectQueryParams,
-  ProjectStatus,
 } from "../../../../types/collections/project";
-import { QueryParams } from "../../../utils/interface";
 import {
   APIResponse,
   HTTPCode,
   createErrorResponse,
   createSuccessResponse,
 } from "../../../utils/response";
-import { UserApp } from "../../../../types/collections/user-app";
+import { UserApp, UserAppQueryParams } from "../../../../types/collections/user-app";
 import { fetchUserAndProjects } from "../../../utils/helpers";
-import image from "../../image/controllers/image";
 import { RequestHelper } from "../../../utils/request-helper";
 
 export default factories.createCoreController(
@@ -37,7 +34,7 @@ export default factories.createCoreController(
           };
 
           // Project query params
-          const projectQueryParams: QueryParams = {
+          const projectQueryParams: ProjectQueryParams = {
             where: {
               $and: [{ id: { $eq: id } }],
             },
@@ -140,7 +137,7 @@ export default factories.createCoreController(
           const user: UserApp = ctx.state.user;
 
           // User query param
-          const userQueryParams: QueryParams = {
+          const userQueryParams: UserAppQueryParams = {
             where: {
               id: { $eq: user.id },
             },
@@ -184,7 +181,7 @@ export default factories.createCoreController(
           const projectId: string = requestHelper.getParam("id");
 
           // Query param to check for user and project
-          const queryParams: QueryParams = {
+          const queryParams: UserAppQueryParams = {
             where: {
               id: { $eq: user.id },
             },

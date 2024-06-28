@@ -1,3 +1,4 @@
+import { QueryParams } from "../../src/utils/query-params";
 import { Section } from "./section";
 
 export interface Contributor {
@@ -10,6 +11,8 @@ export interface Contributor {
   updatedAt: Date;
   section?: Section;
 }
+
+export interface ContributorQueryParams extends QueryParams<Contributor> {}
 
 export class ContributorDVO {
   id: number;

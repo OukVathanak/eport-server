@@ -3,18 +3,18 @@
  */
 
 import { factories } from "@strapi/strapi";
-import { QueryParams } from "../../../utils/interface";
 import {
   Detail,
   DetailDTO,
   DetailDVO,
+  DetailQueryParams,
 } from "../../../../types/collections/detail";
 
 export default factories.createCoreService(
   "api::detail.detail",
   ({ strapi }) => {
     return {
-      async getManyDetail(params: QueryParams): Promise<DetailDVO[]> {
+      async getManyDetail(params: DetailQueryParams): Promise<DetailDVO[]> {
         try {
           const details = (await strapi
             .query("api::detail.detail")
@@ -30,7 +30,7 @@ export default factories.createCoreService(
         }
       },
 
-      async getOneDetail(params: QueryParams): Promise<DetailDVO> {
+      async getOneDetail(params: DetailQueryParams): Promise<DetailDVO> {
         try {
           const detail = (await strapi
             .query("api::detail.detail")

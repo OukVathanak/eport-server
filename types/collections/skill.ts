@@ -1,3 +1,4 @@
+import { QueryParams } from "../../src/utils/query-params";
 import { UserApp } from "./user-app";
 
 export interface Skill {
@@ -9,6 +10,8 @@ export interface Skill {
   updatedAt: Date;
   userApp?: UserApp;
 }
+
+export interface SkillQueryParams extends QueryParams<Skill> {}
 
 export class SkillDVO {
   id: number;

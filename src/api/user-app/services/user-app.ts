@@ -3,18 +3,18 @@
  */
 
 import { factories } from "@strapi/strapi";
-import { QueryParams } from "../../../utils/interface";
 import {
   UserApp,
   UserAppDVO,
   UserAppDTO,
+  UserAppQueryParams,
 } from "../../../../types/collections/user-app";
 
 export default factories.createCoreService(
   "api::user-app.user-app",
   ({ strapi }) => {
     return {
-      async getManyUserApp(params: QueryParams): Promise<UserAppDVO[]> {
+      async getManyUserApp(params: UserAppQueryParams): Promise<UserAppDVO[]> {
         try {
           const users = (await strapi
             .query("api::user-app.user-app")
@@ -30,7 +30,7 @@ export default factories.createCoreService(
         }
       },
 
-      async getOneUserApp(params: QueryParams): Promise<UserAppDVO> {
+      async getOneUserApp(params: UserAppQueryParams): Promise<UserAppDVO> {
         try {
           const user = (await strapi
             .query("api::user-app.user-app")

@@ -70,17 +70,3 @@ export interface UserAppDTO {
   socials?: Social[];
   sessions: Session;
 }
-
-// export interface UserAppQueryParams {
-//   sort?: keyof UserApp | Array<keyof UserApp>;
-//   where?: Partial<Record<keyof UserApp, any>>;
-//   filters?: Partial<Record<keyof UserApp, any>>;
-//   populate?: Array<
-//     keyof Pick<UserApp, "projects" | "homePage" | "skills" | "socials">
-//   >;
-//   fields?: keyof UserApp | Array<keyof UserApp>;
-//   pagination?: {
-//     page?: number;
-//     pageSize: number;
-//   };
-// }

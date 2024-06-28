@@ -1,3 +1,4 @@
+import { QueryParams } from "../../src/utils/query-params";
 import { UserApp } from "./user-app";
 
 export interface Social {
@@ -9,6 +10,8 @@ export interface Social {
   updatedAt: Date;
   userApp?: UserApp;
 }
+
+export interface SocialQueryParams extends QueryParams<Social> {}
 
 export class SocialDVO {
   id: number;

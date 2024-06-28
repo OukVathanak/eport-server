@@ -3,11 +3,11 @@
  */
 
 import { factories } from "@strapi/strapi";
-import { QueryParams } from "../../../utils/interface";
 import {
   Session,
   SessionDTO,
   SessionDVO,
+  SessionQueryParams,
 } from "../../../../types/collections/session";
 import { UserApp } from "../../../../types/collections/user-app";
 import { extractDateFromString, generateToken } from "../../../utils/helpers";
@@ -17,7 +17,7 @@ export default factories.createCoreService(
   "api::session.session",
   ({ strapi }) => {
     return {
-      async getManySession(params: QueryParams): Promise<SessionDVO[]> {
+      async getManySession(params: SessionQueryParams): Promise<SessionDVO[]> {
         try {
           const sessions = (await strapi
             .query("api::session.session")
@@ -33,7 +33,7 @@ export default factories.createCoreService(
         }
       },
 
-      async getOneSession(params: QueryParams): Promise<SessionDVO> {
+      async getOneSession(params: SessionQueryParams): Promise<SessionDVO> {
         try {
           const session = (await strapi
             .query("api::session.session")

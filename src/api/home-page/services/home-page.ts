@@ -3,18 +3,18 @@
  */
 
 import { factories } from "@strapi/strapi";
-import { QueryParams } from "../../../utils/interface";
 import {
   HomePage,
   HomePageDTO,
   HomePageDVO,
+  HomePageQueryParams,
 } from "../../../../types/collections/home-page";
 
 export default factories.createCoreService(
   "api::home-page.home-page",
   ({ strapi }) => {
     return {
-      async getOneHomePage(params: QueryParams): Promise<HomePageDVO> {
+      async getOneHomePage(params: HomePageQueryParams): Promise<HomePageDVO> {
         try {
           const homePage = (await strapi
             .query("api::home-page.home-page")

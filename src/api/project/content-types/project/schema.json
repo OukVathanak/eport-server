@@ -40,8 +40,11 @@
       "unique": false
     },
     "status": {
-      "type": "string",
-      "required": true
+      "type": "enumeration",
+      "enum": [
+        "Ongoing",
+        "Completed"
+      ]
     }
   }
 }

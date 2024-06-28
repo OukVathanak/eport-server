@@ -14,11 +14,11 @@ type QueryCondition<T> = {
 // Recursive type for populate fields
 type PopulateFields<T> = {
   [P in keyof T]?: T[P] extends Array<infer U>
-    ? {
+    ? true | {
         where?: QueryCondition<U>;
         populate?: PopulateFields<U>;
       }
-    : {
+    : true | {
         where?: QueryCondition<T[P]>;
         populate?: PopulateFields<T[P]>;
       };

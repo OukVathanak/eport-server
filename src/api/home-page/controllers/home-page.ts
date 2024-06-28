@@ -3,8 +3,7 @@
  */
 
 import { factories } from "@strapi/strapi";
-import { UserApp } from "../../../../types/collections/user-app";
-import { QueryParams } from "../../../utils/interface";
+import { UserApp, UserAppQueryParams } from "../../../../types/collections/user-app";
 import {
   APIResponse,
   HTTPCode,
@@ -24,7 +23,7 @@ export default factories.createCoreController(
           const { username } = ctx.params;
 
           // Query param
-          const queryParams: QueryParams = {
+          const queryParams: UserAppQueryParams = {
             where: {
               $and: [
                 { username: { $eq: username } },
@@ -70,7 +69,7 @@ export default factories.createCoreController(
           const user: UserApp = ctx.state.user;
 
           // Query for user
-          const queryParams: QueryParams = {
+          const queryParams: UserAppQueryParams = {
             where: {
               id: { $eq: user.id },
             },

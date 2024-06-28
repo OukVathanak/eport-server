@@ -3,18 +3,18 @@
  */
 
 import { factories } from "@strapi/strapi";
-import { QueryParams } from "../../../utils/interface";
 import {
   Section,
   SectionDTO,
   SectionDVO,
+  SectionQueryParams,
 } from "../../../../types/collections/section";
 
 export default factories.createCoreService(
   "api::section.section",
   ({ strapi }) => {
     return {
-      async getManySection(params: QueryParams): Promise<SectionDVO[]> {
+      async getManySection(params: SectionQueryParams): Promise<SectionDVO[]> {
         try {
           const sections = (await strapi
             .query("api::section.section")
@@ -30,7 +30,7 @@ export default factories.createCoreService(
         }
       },
 
-      async getOneSection(params: QueryParams): Promise<SectionDVO> {
+      async getOneSection(params: SectionQueryParams): Promise<SectionDVO> {
         try {
           const section = (await strapi
             .query("api::section.section")

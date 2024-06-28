@@ -1,3 +1,4 @@
+import { QueryParams } from "../../src/utils/query-params";
 import { Detail } from "./detail";
 
 export interface Image {
@@ -8,6 +9,8 @@ export interface Image {
   updatedAt: Date;
   detail?: Detail;
 }
+
+export interface ImageQueryParams extends QueryParams<Image> {}
 
 export class ImageDVO {
   id: number;

@@ -26,11 +26,6 @@
       "relation": "oneToOne",
       "target": "api::user-app.user-app",
       "mappedBy": "homePage"
-    },
-    "projects": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::project.project"
     }
   }
 }

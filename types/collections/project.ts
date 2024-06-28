@@ -55,6 +55,6 @@ export interface ProjectDTO {
 }
 
 export enum ProjectStatus {
-  IN_PROGRESS = "In Progress",
-  COMPLETE = "Complete",
+  IN_PROGRESS = "Ongoing",
+  COMPLETE = "Completed",
 }

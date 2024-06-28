@@ -3,18 +3,18 @@
  */
 
 import { factories } from "@strapi/strapi";
-import { QueryParams } from "../../../utils/interface";
 import {
   Contributor,
   ContributorDTO,
   ContributorDVO,
+  ContributorQueryParams,
 } from "../../../../types/collections/contributor";
 
 export default factories.createCoreService(
   "api::contributor.contributor",
   ({ strapi }) => {
     return {
-      async getManyContributor(params: QueryParams): Promise<ContributorDVO[]> {
+      async getManyContributor(params: ContributorQueryParams): Promise<ContributorDVO[]> {
         try {
           const contributors = (await strapi
             .query("api::contributor.contributor")
@@ -32,7 +32,7 @@ export default factories.createCoreService(
         }
       },
 
-      async getOneContributor(params: QueryParams): Promise<ContributorDVO> {
+      async getOneContributor(params: ContributorQueryParams): Promise<ContributorDVO> {
         try {
           const contributors = (await strapi
             .query("api::contributor.contributor")

@@ -1,15 +1,11 @@
 import bcrypt from "bcrypt";
 import crypto from "crypto";
-import { UserApp } from "../../types/collections/user-app";
-import { QueryParams } from "./interface";
-import project from "../api/project/controllers/project";
+import { UserApp, UserAppQueryParams } from "../../types/collections/user-app";
 import {
   APIResponse,
   HTTPCode,
   createErrorResponse,
-  createSuccessResponse,
 } from "./response";
-import { Project } from "../../types/collections/project";
 
 // ---------- Hash Password ----------
 export const hashPassword = async (password: string): Promise<string> => {
@@ -65,7 +61,7 @@ export const fetchUserAndProjects = async (ctx) => {
     const user: UserApp = ctx.state.user;
 
     // Query params
-    const queryParams: QueryParams = {
+    const queryParams: UserAppQueryParams = {
       where: {
         id: { $eq: user.id },
       },

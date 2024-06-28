@@ -3,12 +3,11 @@
  */
 
 import { factories } from "@strapi/strapi";
-import { QueryParams } from "../../../utils/interface";
-import { Skill, SkillDTO, SkillDVO } from "../../../../types/collections/skill";
+import { Skill, SkillDTO, SkillDVO, SkillQueryParams } from "../../../../types/collections/skill";
 
 export default factories.createCoreService("api::skill.skill", ({ strapi }) => {
   return {
-    async getManySkill(params: QueryParams): Promise<SkillDVO[]> {
+    async getManySkill(params: SkillQueryParams): Promise<SkillDVO[]> {
       try {
         const skills = (await strapi
           .query("api::skill.skill")
@@ -24,7 +23,7 @@ export default factories.createCoreService("api::skill.skill", ({ strapi }) => {
       }
     },
 
-    async getOneSkill(params: QueryParams): Promise<SkillDVO> {
+    async getOneSkill(params: SkillQueryParams): Promise<SkillDVO> {
       try {
         const skill = (await strapi
           .query("api::skill.skill")

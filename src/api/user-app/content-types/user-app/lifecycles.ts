@@ -1,7 +1,6 @@
 import { HomePageDTO } from "../../../../../types/collections/home-page";
-import { UserApp } from "../../../../../types/collections/user-app";
+import { UserApp, UserAppQueryParams } from "../../../../../types/collections/user-app";
 import { hashPassword } from "../../../../utils/helpers";
-import { QueryParams } from "../../../../utils/interface";
 
 export default {
   async beforeCreate(event) {
@@ -15,7 +14,7 @@ export default {
 
   async beforeUpdate(event) {
     if (event.params.data.password) {
-      const queryParams: QueryParams = {
+      const queryParams: UserAppQueryParams = {
         where: { id: { $eq: event.params.data.id } },
       };
 

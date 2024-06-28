@@ -1,3 +1,4 @@
+import { QueryParams } from "../../src/utils/query-params";
 import { Image } from "./image";
 import { Section } from "./section";
 
@@ -12,6 +13,8 @@ export interface Detail {
   section?: Section;
   images?: Image[];
 }
+
+export interface DetailQueryParams extends QueryParams<Detail> {}
 
 export class DetailDVO {
   id: number;

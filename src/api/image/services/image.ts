@@ -3,12 +3,11 @@
  */
 
 import { factories } from "@strapi/strapi";
-import { QueryParams } from "../../../utils/interface";
-import { Image, ImageDTO, ImageDVO } from "../../../../types/collections/image";
+import { Image, ImageDTO, ImageDVO, ImageQueryParams } from "../../../../types/collections/image";
 
 export default factories.createCoreService("api::image.image", ({ strapi }) => {
   return {
-    async getManyImage(params: QueryParams): Promise<ImageDVO[]> {
+    async getManyImage(params: ImageQueryParams): Promise<ImageDVO[]> {
       try {
         const images = (await strapi
           .query("api::image.image")
@@ -24,7 +23,7 @@ export default factories.createCoreService("api::image.image", ({ strapi }) => {
       }
     },
 
-    async getOneImage(params: QueryParams): Promise<ImageDVO> {
+    async getOneImage(params: ImageQueryParams): Promise<ImageDVO> {
       try {
         const image = (await strapi
           .query("api::image.image")

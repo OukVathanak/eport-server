@@ -1,3 +1,4 @@
+import { QueryParams } from "../../src/utils/query-params";
 import { UserApp } from "./user-app";
 
 export interface Session {
@@ -10,6 +11,8 @@ export interface Session {
   updatedAt: Date;
   userApp?: UserApp;
 }
+
+export interface SessionQueryParams extends QueryParams<Session> {}
 
 export class SessionDVO {
   id: number;
